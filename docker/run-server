@@ -1,0 +1,15 @@
+#!/bin/bash
+
+set -euo pipefail
+
+echo "Collecting static files..."
+python manage.py collectstatic --noinput
+
+echo "Migrating Database"
+python manage.py migrate --noinput
+
+echo "Create admin user"
+python manage.py createsuperuser --noinput || true
+
+echo "Run server"
+gunicorn --bind=:8000 --workers=4 --forwarded-allow-ips="*" core.wsgi
