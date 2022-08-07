@@ -39,7 +39,10 @@ THIRD_PARTY_APPS = [
 ]
 
 LOCAL_APPS = [
-    "app.users",
+    "app.users.apps.UsersConfig",
+    "app.courses.apps.CoursesConfig",
+    "app.submissions.apps.SubmissionsConfig",
+    "app.problems.apps.ProblemsConfig",
 ]
 
 DJANGO_APPS = [
