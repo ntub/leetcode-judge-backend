@@ -21,6 +21,8 @@ from app.users.api.serializers import (
 
 class AuthViewSet(GenericViewSet):
     """
+    Social Auth View Set.
+
     ref: https://pastebin.com/08iLNCJc
     """
 
@@ -39,11 +41,17 @@ class AuthViewSet(GenericViewSet):
     @action(["post"], detail=False)
     def login(self, request):
         """
-        Login and validate\n
+        Login and validate.
 
-        - access_token: Google OAuth2 Auth access token.
+        - Args
+        access_token: str Google OAuth2 Auth access token.
+        `OAuth2 scopes: 'profile email'`.
 
-        `OAuth2 scopes: 'profile email'`
+
+        - Returns
+        access: str
+        refresh: str
+
         """
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
@@ -67,7 +75,7 @@ class AuthViewSet(GenericViewSet):
             {
                 "access": str(token.access_token),
                 "refresh": str(token),
-            }
+            },
         )
 
     @swagger_auto_schema(responses={200: AuthPayloadSerializer})

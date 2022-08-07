@@ -8,7 +8,7 @@ from django_extensions.db.models import ActivatorModel, TimeStampedModel
 
 from utils.django.managers import BaseManager
 
-__all__ = ["BaseModel"]
+__all__ = ["BaseModel", "BaseActivatorModel"]
 
 USER_MODEL = settings.AUTH_USER_MODEL
 

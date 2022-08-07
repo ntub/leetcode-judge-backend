@@ -1,5 +1,5 @@
 # Base Config
-ARG PYTHON_VERSION=3.8.12
+ARG PYTHON_VERSION=3.8.13
 FROM python:${PYTHON_VERSION}-slim as base
 
 # Builder
