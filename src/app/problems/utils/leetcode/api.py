@@ -1,15 +1,15 @@
+from enum import Enum
+from functools import cached_property
+from pathlib import Path
+from typing import Any, Dict, Iterator, List, Optional
+
 import humps
 
-from typing import Optional, Dict, Any, List, Iterator
-from pathlib import Path
-from functools import cached_property
-from enum import Enum
-
+from django.conf import settings
 from gql import Client, gql
 from gql.transport.requests import RequestsHTTPTransport
-from graphql import DocumentNode
 
-from django.conf import settings
+from graphql import DocumentNode
 
 
 class GraphAPIMethod(str, Enum):
@@ -35,7 +35,10 @@ class LeetCodeGraphAPI:
 
     @cached_property
     def question_list_query(self) -> DocumentNode:
-        query_str = self._read_graphql(GraphAPIMethod.QUERY, self.QUESTION_LIST_QUERY_FILE)
+        query_str = self._read_graphql(
+            GraphAPIMethod.QUERY,
+            self.QUESTION_LIST_QUERY_FILE,
+        )
         return gql(query_str)
 
     @cached_property
@@ -73,13 +76,15 @@ class LeetCodeGraphAPI:
             "limit": limit,
             "filters": {},
         }
-        return self._execute(self.question_list_query, params)
+        data = self._execute(self.question_list_query, params)
+        return data.get("problemset_question_list", {})
 
     def question(self, title_slug: str) -> Dict[str, Any]:
         params = {
             "titleSlug": title_slug,
         }
-        return self._execute(self.question_query, params)
+        data = self._execute(self.question_query, params)
+        return data.get("question", {})
 
     def question_list_iterator(
         self,
@@ -88,10 +93,10 @@ class LeetCodeGraphAPI:
     ) -> Iterator[List[Dict[str, Any]]]:
         offset = 0
         response = self.question_list(offset, limit, category_slug)
-        total = response.get("problemsetQuestionList", {}).get("total", 0)
-        data = response.get("problemsetQuestionList", {}).get("questions", [])
+        total = response.get("total", 0)
+        data = response.get("questions", [])
         while total >= offset and data:
             offset += len(data)
             yield data
             response = self.question_list(offset, limit, category_slug)
-            data = response.get("problemsetQuestionList", {}).get("questions", [])
+            data = response.get("questions", [])

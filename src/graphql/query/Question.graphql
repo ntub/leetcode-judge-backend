@@ -16,35 +16,18 @@ query questionData($titleSlug: String!) {
     similarQuestions
     exampleTestcases
     categoryTitle
-    contributors {
-      username
-      profileUrl
-      avatarUrl
-      __typename
-    }
     topicTags {
       name
       slug
-      translatedName
-      __typename
     }
     companyTagStats
     codeSnippets {
       lang
       langSlug
       code
-      __typename
     }
     stats
     hints
-    solution {
-      id
-      canSeeDetail
-      paidOnly
-      hasVideoSolution
-      paidOnlyVideo
-      __typename
-    }
     status
     sampleTestCase
     metaData
@@ -57,14 +40,5 @@ query questionData($titleSlug: String!) {
     envInfo
     libraryUrl
     adminUrl
-    challengeQuestion {
-      id
-      date
-      incompleteChallengeCount
-      streakCount
-      type
-      __typename
-    }
-    __typename
   }
 }

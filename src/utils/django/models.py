@@ -8,17 +8,24 @@ from django_extensions.db.models import ActivatorModel, TimeStampedModel
 
 from utils.django.managers import BaseManager
 
-__all__ = ["BaseModel", "BaseActivatorModel"]
+__all__ = ["UUIDModel", "BaseModel", "BaseActivatorModel"]
 
 USER_MODEL = settings.AUTH_USER_MODEL
 
 
-class BaseModel(TimeStampedModel):
+class UUIDModel(models.Model):
     id = models.UUIDField(
         primary_key=True,
         default=uuid.uuid4,
         editable=False,
     )
+    objects: models.Manager[typing.Any] = BaseManager()
+
+    class Meta:
+        abstract = True
+
+
+class BaseModel(TimeStampedModel, UUIDModel):
     creator = models.ForeignKey(
         USER_MODEL,
         verbose_name=_("creator"),
@@ -37,9 +44,6 @@ class BaseModel(TimeStampedModel):
         related_name="+",
         editable=False,
     )
-
-    # Default manager
-    objects: models.Manager[typing.Any] = BaseManager()
 
     class Meta:
         abstract = True

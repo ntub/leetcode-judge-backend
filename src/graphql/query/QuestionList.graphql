@@ -15,19 +15,10 @@ query problemsetQuestionList(
       acRate
       difficulty
       freqBar
-      frontendQuestionId: questionFrontendId
       isFavor
-      paidOnly: isPaidOnly
       status
       title
       titleSlug
-      topicTags {
-        name
-        id
-        slug
-      }
-      hasSolution
-      hasVideoSolution
     }
   }
 }
