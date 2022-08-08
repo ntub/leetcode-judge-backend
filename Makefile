@@ -11,6 +11,7 @@ COMMA := ,
 PROJECT_NAME := $(shell echo $(notdir $(CURDIR)) | sed -e 's/_/-/g')
 PYTHON_IMAGE_VERSION := $(shell cat .python-version)
 
+DOCKER_HUB := 10446005/
 CURRENT_BRANCH := $(shell git rev-parse --abbrev-ref HEAD  | sed -e 's/_/-/g; s/\//-/g')
 CURRENT_VERSION := $(shell git rev-parse --short HEAD)
 
@@ -52,11 +53,11 @@ clean:  ## Clean cache files
 .PHONY: clean
 
 build: Dockerfile  ## Build docker image
-	docker build \
+	DOCKER_DEFAULT_PLATFORM=linux/amd64 docker build \
 		-f $^ \
 		--build-arg PYTHON_IMAGE_VERSION=$(PYTHON_IMAGE_VERSION) \
-		--tag $(PROJECT_NAME):$(CURRENT_BRANCH) \
-		--tag $(PROJECT_NAME):$(CURRENT_VERSION) .
+		--tag $(DOCKER_HUB)$(PROJECT_NAME):$(CURRENT_BRANCH) \
+		--tag $(DOCKER_HUB)$(PROJECT_NAME):$(CURRENT_VERSION) .
 .PHONY: build
 
 run:  ## Run dev server
