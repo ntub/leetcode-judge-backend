@@ -7,6 +7,7 @@ app_name = "users"
 
 router = SimpleRouter(trailing_slash=False)
 router.register("token", views.AuthViewSet, "auth")
+router.register("users", views.UserViewSet, "users")
 
 urlpatterns = [
     path("", include(router.urls)),
