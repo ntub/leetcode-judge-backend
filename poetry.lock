@@ -254,6 +254,14 @@ python-versions = ">=3.7"
 Django = ">=3.2"
 
 [[package]]
+name = "django-object-actions"
+version = "4.0.0"
+description = "A Django app for adding object tools for models in the admin"
+category = "main"
+optional = false
+python-versions = ">=3.7,<4.0"
+
+[[package]]
 name = "django-split-settings"
 version = "1.1.0"
 description = "Organize Django settings into multiple files and directories. Easily override and modify settings. Use wildcards and optional settings files."
@@ -687,6 +695,18 @@ description = "Tiny 'shelve'-like database with concurrency support"
 category = "dev"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "pillow"
+version = "9.2.0"
+description = "Python Imaging Library (Fork)"
+category = "main"
+optional = false
+python-versions = ">=3.7"
+
+[package.extras]
+docs = ["furo", "olefile", "sphinx (>=2.4)", "sphinx-copybutton", "sphinx-issues (>=3.0.1)", "sphinx-removed-in", "sphinxext-opengraph"]
+tests = ["check-manifest", "coverage", "defusedxml", "markdown2", "olefile", "packaging", "pyroma", "pytest", "pytest-cov", "pytest-timeout"]
 
 [[package]]
 name = "platformdirs"
@@ -1129,7 +1149,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "0c36eed4d1b0c99d9c0c08c14cd43ceabe0e832ea7ff7b051df36305c391c02d"
+content-hash = "0e0e75ea39936eb6e15fe769fd845598d5008fdee7aa655c023cae4a9ca42622"
 
 [metadata.files]
 appnope = []
@@ -1154,6 +1174,7 @@ django-cors-headers = []
 django-environ = []
 django-extensions = []
 django-filter = []
+django-object-actions = []
 django-split-settings = []
 django-stubs = []
 django-stubs-ext = []
@@ -1187,6 +1208,7 @@ parso = []
 pathspec = []
 pexpect = []
 pickleshare = []
+pillow = []
 platformdirs = []
 prompt-toolkit = []
 psycopg2-binary = []

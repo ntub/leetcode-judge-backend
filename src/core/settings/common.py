@@ -36,6 +36,7 @@ THIRD_PARTY_APPS = [
     "rest_framework",
     "social_django",
     "corsheaders",
+    "django_object_actions",
 ]
 
 LOCAL_APPS = [

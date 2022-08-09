@@ -1,0 +1,9 @@
+div.readonly.code {
+  white-space: pre;
+}
+
+.responsive {
+  width: 75%;
+  height: auto;
+  max-height: 75%;
+}

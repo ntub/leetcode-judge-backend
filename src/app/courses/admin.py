@@ -1,10 +1,11 @@
 from django.contrib import admin
 
 from app.courses.models import Course
+from utils.django.admin import AuditModelAdmin
 
 
 @admin.register(Course)
-class CourseAdmin(admin.ModelAdmin["Course"]):
+class CourseAdmin(AuditModelAdmin[Course]):
     list_display = ("code", "title", "created")
     search_fields = ("code", "title")
     ordering = ("-created", "-modified", "code")
