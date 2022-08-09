@@ -1,5 +1,8 @@
+import pathlib
+
 from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
+from django.utils.timezone import localtime
 from django.utils.translation import gettext_lazy as _
 
 from app.courses.models import Course
@@ -12,7 +15,11 @@ def snapshot_upload_path(instance: "Submission", filename: str) -> str:
     question_slug = instance.question.title_slug.replace("-", "_")
     username = instance.user.username
     id = str(instance.id).replace("-", "")
-    return f"submission_snapshots/{question_slug}/{username}/{id}{filename}"
+    file_extension = pathlib.Path(filename).suffix
+    now_txt = localtime().strftime("%Y%m%d%H%M%S")
+    return (
+        f"submission_snapshots/{question_slug}/{username}/{now_txt}{id}{file_extension}"
+    )
 
 
 class Submission(BaseModel):
