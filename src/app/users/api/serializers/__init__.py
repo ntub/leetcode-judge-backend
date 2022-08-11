@@ -4,7 +4,7 @@ from app.users.api.serializers.auth import (
     LoginSerializer,
     TokenPayloadSerializer,
 )
-from app.users.api.serializers.user import UserSerializer
+from app.users.api.serializers.user import SimpleUserSerializer, UserSerializer
 
 __all__ = [
     "LoginSerializer",
@@ -12,4 +12,5 @@ __all__ = [
     "AuthPayloadSerializer",
     "TokenPayloadSerializer",
     "UserSerializer",
+    "SimpleUserSerializer",
 ]

@@ -29,6 +29,7 @@ class AuthViewSet(GenericViewSet):
     authentication_classes = ()
     permission_classes = (AllowAny,)
     serializer_class = LoginSerializer
+    filter_backends = ()
 
     def get_serializer_class(self):
         if self.action == "refresh":

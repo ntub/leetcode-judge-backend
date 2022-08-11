@@ -24,7 +24,7 @@ venv: poetry shell
 test:  ## Run check and test
 	python src/manage.py check
 	python src/manage.py makemigrations --check --dry-run --noinput
-	# pytest -s src  # TODO
+	pytest -s src
 .PHONY: test
 
 lint:  ## Check lint

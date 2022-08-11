@@ -1,6 +1,7 @@
 from rest_framework import serializers
 
 from app.users.models import User
+from utils.rest_framework.serializers import build_model_serializer_class
 
 
 class UserSerializer(serializers.ModelSerializer[User]):
@@ -22,3 +23,9 @@ class UserSerializer(serializers.ModelSerializer[User]):
             "is_active",
             "is_superuser",
         )
+
+
+SimpleUserSerializer = build_model_serializer_class(
+    model_class=User,
+    field_list=["username", "email", "first_name", "last_name"],
+)

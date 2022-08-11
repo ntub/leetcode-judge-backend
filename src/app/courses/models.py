@@ -10,7 +10,7 @@ from app.users.models import User
 from utils.django.models import BaseActivatorModel
 
 
-class Course(TitleDescriptionModel, BaseActivatorModel):
+class Course(BaseActivatorModel, TitleDescriptionModel):
     code = models.CharField(
         _("code"),
         max_length=10,

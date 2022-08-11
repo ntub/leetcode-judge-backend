@@ -13,6 +13,9 @@ admin.site.site_url = "/api/docs/"
 
 v1_urlpatterns = [
     path("auth/", include("app.users.api.urls")),
+    path("course/", include("app.courses.api.urls")),
+    path("problem/", include("app.problems.api.urls")),
+    path("record/", include("app.submissions.api.urls")),
 ]
 
 api_urlpatterns = [
@@ -24,12 +27,10 @@ api_urlpatterns = [
     path("docs/", RedirectView.as_view(pattern_name=DEFAULT_API_DOC_URL), name="docs"),
 ]
 
-
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include((api_urlpatterns, "api"))),
 ]
-
 
 if settings.DEBUG:
     urlpatterns += static(  # type: ignore

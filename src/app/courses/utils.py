@@ -10,11 +10,11 @@ def generate_serial_number(
     prefix: str,
     field_name="serial_number",
     characters=string.ascii_uppercase + string.digits,
-    code_length=7,
+    code_length=3,
     max_try=2000,
 ) -> str:
     model = apps.get_model(model_path)
-    date = timezone.localdate().strftime("%Y%m%d")
+    date = timezone.localdate().strftime("%Y%m%d")[-6:]
     for _ in range(max_try):
         code = "".join(random.choices(characters, k=code_length))
         serial_number = f"{prefix}{date}{code}"
