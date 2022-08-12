@@ -29,6 +29,7 @@ class AuthViewSet(viewsets.GenericViewSet):
     permission_classes = (permissions.AllowAny,)
     serializer_class = LoginSerializer
     filter_backends = ()
+    pagination_class = None
 
     def get_serializer_class(self):
         if self.action == "refresh":
@@ -37,7 +38,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             return AuthVerifySerializer
         return super().get_serializer_class()
 
-    @swagger_auto_schema(responses={200: AuthPayloadSerializer})
+    @swagger_auto_schema(responses={200: AuthPayloadSerializer})  # type: ignore
     @action(["post"], detail=False)
     def login(self, request):
         """
@@ -78,7 +79,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             },
         )
 
-    @swagger_auto_schema(responses={200: AuthPayloadSerializer})
+    @swagger_auto_schema(responses={200: AuthPayloadSerializer})  # type: ignore
     @action(["post"], detail=False)
     def refresh(self, request):
         serializer = self.get_serializer(data=request.data)
@@ -88,7 +89,7 @@ class AuthViewSet(viewsets.GenericViewSet):
             raise InvalidToken(e.args[0])
         return Response(serializer.validated_data)
 
-    @swagger_auto_schema(responses={200: TokenPayloadSerializer})
+    @swagger_auto_schema(responses={200: TokenPayloadSerializer})  # type: ignore
     @action(["post"], detail=False)
     def verify(self, request):
         serializer = self.get_serializer(data=request.data)
