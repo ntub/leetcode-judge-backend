@@ -14,8 +14,6 @@ REST_FRAMEWORK = {
         "rest_framework.parsers.MultiPartParser",
     ),
     "DEFAULT_PERMISSION_CLASSES": ("rest_framework.permissions.IsAuthenticated",),
-    "DEFAULT_PAGINATION_CLASS": "utils.rest_framework.pagination.PageNumberPagination",
-    "PAGE_SIZE": 500,
     "DATETIME_FORMAT": "%Y-%m-%d %H:%M:%S",
     "DATETIME_INPUT_FORMATS": ("%Y-%m-%d %H:%M:%S",),
 }

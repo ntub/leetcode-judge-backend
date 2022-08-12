@@ -6,7 +6,7 @@ from rest_framework.serializers import BaseSerializer
 
 from app.courses.api.serializers import CourseDetailSerializer, CourseSerializer
 from app.courses.models import Course
-from utils.rest_framework import BaseViewMixin
+from utils.rest_framework import BaseViewMixin, PageNumberPagination
 from utils.rest_framework.filters import SearchFilter
 
 
@@ -14,6 +14,7 @@ class CourseViewSet(BaseViewMixin, viewsets.ReadOnlyModelViewSet):
     lookup_field = "code"
     queryset = Course.objects.active()
     serializer_class = CourseDetailSerializer
+    pagination_class = PageNumberPagination
     action_serializer_mapping = {
         "list": CourseSerializer,
     }

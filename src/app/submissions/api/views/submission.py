@@ -3,7 +3,7 @@ from rest_framework import mixins, parsers, viewsets
 
 from app.submissions.api.serializers import SubmissionSerializer
 from app.submissions.models import Submission
-from utils.rest_framework import BaseViewMixin
+from utils.rest_framework import BaseViewMixin, PageNumberPagination
 
 
 class SubmissionViewSet(
@@ -15,6 +15,7 @@ class SubmissionViewSet(
     queryset = Submission.objects.all()
     serializer_class = SubmissionSerializer
     parser_classes = (parsers.MultiPartParser,)
+    pagination_class = PageNumberPagination
 
     def get_queryset(self) -> QuerySet[Submission]:
         return super().get_queryset().filter(user=self.request.user)
