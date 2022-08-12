@@ -1,11 +1,12 @@
 from typing import Type
 
-from rest_framework import viewsets
+from rest_framework import filters, viewsets
 from rest_framework.serializers import BaseSerializer
 
 from app.problems.api.serializers import QuestionDetailSerializer, QuestionSerializer
 from app.problems.models import Question
 from utils.rest_framework import BaseViewMixin
+from utils.rest_framework.filters import SearchFilter
 
 
 class QuestionViewSet(BaseViewMixin, viewsets.ReadOnlyModelViewSet):
@@ -15,6 +16,11 @@ class QuestionViewSet(BaseViewMixin, viewsets.ReadOnlyModelViewSet):
     action_serializer_mapping = {
         "list": QuestionSerializer,
     }
+    filter_backends = (
+        filters.OrderingFilter,
+        SearchFilter,
+    )
+    search_fields = ("title", "code")
 
     def get_serializer_class(self) -> Type[BaseSerializer[Question]]:
         if self.action in self.action_serializer_mapping:

@@ -1,12 +1,13 @@
 from typing import Type
 
 from django.db.models import QuerySet
-from rest_framework import viewsets
+from rest_framework import filters, viewsets
 from rest_framework.serializers import BaseSerializer
 
 from app.courses.api.serializers import CourseDetailSerializer, CourseSerializer
 from app.courses.models import Course
 from utils.rest_framework import BaseViewMixin
+from utils.rest_framework.filters import SearchFilter
 
 
 class CourseViewSet(BaseViewMixin, viewsets.ReadOnlyModelViewSet):
@@ -16,6 +17,11 @@ class CourseViewSet(BaseViewMixin, viewsets.ReadOnlyModelViewSet):
     action_serializer_mapping = {
         "list": CourseSerializer,
     }
+    filter_backends = (
+        filters.OrderingFilter,
+        SearchFilter,
+    )
+    search_fields = ("title", "code")
 
     def get_queryset(self) -> QuerySet[Course]:
         return super().get_queryset().filter(users=self.request.user)
