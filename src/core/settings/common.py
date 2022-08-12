@@ -37,6 +37,8 @@ THIRD_PARTY_APPS = [
     "social_django",
     "corsheaders",
     "django_object_actions",
+    "ckeditor",
+    "ckeditor_uploader",
 ]
 
 LOCAL_APPS = [
@@ -44,6 +46,7 @@ LOCAL_APPS = [
     "app.courses.apps.CoursesConfig",
     "app.submissions.apps.SubmissionsConfig",
     "app.problems.apps.ProblemsConfig",
+    "app.bulletins.apps.BulletinsConfig",
 ]
 
 DJANGO_APPS = [

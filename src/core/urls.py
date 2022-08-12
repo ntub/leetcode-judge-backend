@@ -16,6 +16,7 @@ v1_urlpatterns = [
     path("course/", include("app.courses.api.urls")),
     path("problem/", include("app.problems.api.urls")),
     path("record/", include("app.submissions.api.urls")),
+    path("bulletin/", include("app.bulletins.api.urls")),
 ]
 
 api_urlpatterns = [
@@ -30,6 +31,7 @@ api_urlpatterns = [
 urlpatterns = [
     path("admin/", admin.site.urls),
     path("api/", include((api_urlpatterns, "api"))),
+    path("ckeditor/", include("ckeditor_uploader.urls")),
 ]
 
 if settings.DEBUG:

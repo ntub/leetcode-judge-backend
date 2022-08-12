@@ -44,6 +44,9 @@ class Course(BaseActivatorModel, TitleDescriptionModel):
         blank=True,
     )
 
+    def __str__(self):
+        return self.title
+
     class Meta:
         verbose_name = _("course")
         verbose_name_plural = _("courses")

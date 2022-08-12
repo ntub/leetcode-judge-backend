@@ -1,10 +1,9 @@
 from django.utils.translation import gettext_lazy as _
 from drf_yasg.utils import swagger_auto_schema
+from rest_framework import permissions, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
-from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
-from rest_framework.viewsets import GenericViewSet
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -19,7 +18,7 @@ from app.users.api.serializers import (
 )
 
 
-class AuthViewSet(GenericViewSet):
+class AuthViewSet(viewsets.GenericViewSet):
     """
     Social Auth View Set.
 
@@ -27,7 +26,7 @@ class AuthViewSet(GenericViewSet):
     """
 
     authentication_classes = ()
-    permission_classes = (AllowAny,)
+    permission_classes = (permissions.AllowAny,)
     serializer_class = LoginSerializer
     filter_backends = ()
 

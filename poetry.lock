@@ -262,6 +262,18 @@ argon2 = ["argon2-cffi (>=19.1.0)"]
 bcrypt = ["bcrypt"]
 
 [[package]]
+name = "django-ckeditor"
+version = "6.5.0"
+description = "Django admin CKEditor integration."
+category = "main"
+optional = false
+python-versions = ">=3.8"
+
+[package.dependencies]
+Django = ">=3.2"
+django-js-asset = ">=1.2.2"
+
+[[package]]
 name = "django-cors-headers"
 version = "3.13.0"
 description = "django-cors-headers is a Django application for handling the server headers required for Cross-Origin Resource Sharing (CORS)."
@@ -306,6 +318,20 @@ python-versions = ">=3.7"
 
 [package.dependencies]
 Django = ">=3.2"
+
+[[package]]
+name = "django-js-asset"
+version = "2.0.0"
+description = "script tag with additional attributes for django.forms.Media"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+
+[package.dependencies]
+Django = ">=2.2"
+
+[package.extras]
+tests = ["coverage"]
 
 [[package]]
 name = "django-object-actions"
@@ -1346,7 +1372,7 @@ multidict = ">=4.0"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "f49424420b8eba9144995f5aedc495cc1dadbf2a9619e265e8c9035b17f8f2f7"
+content-hash = "84008d3ef80b1978e68918bcf29b1aaa4b1a2104c13be556c0071096579e680b"
 
 [metadata.files]
 appnope = []
@@ -1371,10 +1397,12 @@ cryptography = []
 decorator = []
 defusedxml = []
 django = []
+django-ckeditor = []
 django-cors-headers = []
 django-environ = []
 django-extensions = []
 django-filter = []
+django-js-asset = []
 django-object-actions = []
 django-split-settings = []
 django-storages = []
