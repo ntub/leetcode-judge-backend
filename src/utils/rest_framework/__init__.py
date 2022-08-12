@@ -1,3 +1,4 @@
+from utils.rest_framework.pagination import PageNumberPagination
 from utils.rest_framework.serializers import (
     build_model_serializer,
     build_model_serializer_class,
@@ -8,4 +9,5 @@ __all__ = [
     "BaseViewMixin",
     "build_model_serializer_class",
     "build_model_serializer",
+    "PageNumberPagination",
 ]
