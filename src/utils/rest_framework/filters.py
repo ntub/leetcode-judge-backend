@@ -2,6 +2,8 @@ import typing
 
 from rest_framework import filters, request, views
 
+__all__ = ["SearchFilter"]
+
 
 class SearchFilter(filters.SearchFilter):
     def get_search_fields(
