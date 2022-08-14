@@ -1,15 +1,23 @@
 from django.db import models
 from rest_framework import serializers
 
-from app.bulletins.models import Announcement
+from app.bulletins.models import Announcement, AttachFile
 from app.courses.api.serializers import CourseSerializer
 from app.users.api.serializers import SimpleUserSerializer
+from utils.rest_framework import build_model_serializer
 
 
 class AnnouncementSerializer(serializers.ModelSerializer[Announcement]):
     courses = CourseSerializer(many=True)
     creator = SimpleUserSerializer()
     updater = SimpleUserSerializer()
+    attach_files = build_model_serializer(
+        AttachFile,
+        field_list=["file", "name"],
+        read_only_list=["file", "name"],
+        many=True,
+        read_only=True,
+    )
 
     class Meta:
         model = Announcement
@@ -18,6 +26,7 @@ class AnnouncementSerializer(serializers.ModelSerializer[Announcement]):
             "title",
             "description",
             "courses",
+            "attach_files",
             "status",
             "activate_date",
             "deactivate_date",
@@ -28,6 +37,7 @@ class AnnouncementSerializer(serializers.ModelSerializer[Announcement]):
         )
         read_only_fields = (
             "id",
+            "attach_files",
             "status",
             "activate_date",
             "deactivate_date",
@@ -44,4 +54,4 @@ class AnnouncementSerializer(serializers.ModelSerializer[Announcement]):
         return queryset.select_related(
             "creator",
             "updater",
-        ).prefetch_related("courses")
+        ).prefetch_related("courses", "attach_files")

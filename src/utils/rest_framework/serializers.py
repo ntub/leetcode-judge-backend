@@ -1,4 +1,4 @@
-from typing import List, Optional, Type, Union
+from typing import Any, List, Optional, Type, Union
 
 from django.db import models
 from rest_framework import serializers
@@ -27,15 +27,15 @@ def build_model_serializer_class(
 def build_model_serializer(
     model_class: Type[models.Model],
     field_list: Union[str, List[str]] = "__all__",
-    many: bool = False,
     read_only_list: Optional[List[str]] = None,
+    **kwargs: Any,
 ) -> serializers.ModelSerializer:
     serializer = build_model_serializer_class(
         model_class=model_class,
         field_list=field_list,
         read_only_list=read_only_list,
     )
-    if many:
-        return serializer(many=many)
+    if kwargs:
+        return serializer(**kwargs)
 
     return serializer()
