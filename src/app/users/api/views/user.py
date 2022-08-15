@@ -7,6 +7,7 @@ from rest_framework.decorators import action
 from rest_framework.request import Request
 from rest_framework.response import Response
 
+from app.problems.models import Question
 from app.submissions.models import Submission
 from app.users.api.serializers import UserStatisticsSerializer
 from app.users.models import User
@@ -30,9 +31,8 @@ class UserViewSet(BaseViewMixin, viewsets.GenericViewSet):
             "UserStatistics",
             ["user", "statistics"],
         )
-        user_statistics = user_statistics_class(
-            user=request.user,
-            statistics=Submission.objects.select_related(
+        statistics_values = list(
+            Submission.objects.select_related(
                 "question",
             )
             .values(
@@ -42,6 +42,32 @@ class UserViewSet(BaseViewMixin, viewsets.GenericViewSet):
             .annotate(
                 question_count=Count("question__difficulty"),
             ),
+        )
+        status_list = Submission.VerifyStatus.values
+        difficulty_list = list(
+            Question.objects.distinct().values_list("difficulty", flat=True),
+        )
+        statistics_mapping = {}
+        stat_key_fmt = "%s__%s"
+        # Initial
+        for difficulty_ in difficulty_list:
+            for status_ in status_list:
+                stat_key = stat_key_fmt % (difficulty_, status_)
+                statistics_mapping[stat_key] = {
+                    "question__difficulty": difficulty_,
+                    "verify_status": status_,
+                    "question_count": 0,
+                }
+
+        for user_stat in statistics_values:
+            difficulty_ = user_stat["question__difficulty"]
+            status_ = user_stat["verify_status"]
+            stat_key = stat_key_fmt % (difficulty_, status_)
+            statistics_mapping[stat_key] = user_stat
+
+        user_statistics = user_statistics_class(
+            user=request.user,
+            statistics=statistics_mapping.values(),
         )
         serializer = self.get_serializer(user_statistics)
         return Response(serializer.data)
