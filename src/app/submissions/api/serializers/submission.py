@@ -131,3 +131,7 @@ class SubmissionSerializer(serializers.ModelSerializer[Submission]):
             "creator",
             "updater",
         )
+
+
+class UpdateSubmissionSerializer(SubmissionSerializer):
+    snapshot = serializers.ImageField(required=False)

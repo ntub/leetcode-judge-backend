@@ -6,6 +6,8 @@ from app.users.api.serializers.auth import (
 )
 from app.users.api.serializers.user import SimpleUserSerializer, UserSerializer
 
+from app.users.api.serializers.statistics import UserStatisticsSerializer  # isort:skip
+
 __all__ = [
     "LoginSerializer",
     "AuthVerifySerializer",
@@ -13,4 +15,5 @@ __all__ = [
     "TokenPayloadSerializer",
     "UserSerializer",
     "SimpleUserSerializer",
+    "UserStatisticsSerializer",
 ]
