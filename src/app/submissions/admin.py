@@ -19,7 +19,7 @@ class SubmissionAdmin(AuditModelAdmin[Submission]):
 
 
 @admin.register(VerifySubmission)
-class VerifySubmissionAdmin(DjangoObjectActions, SubmissionAdmin):
+class VerifySubmissionAdmin(DjangoObjectActions, SubmissionAdmin):  # type: ignore
     change_actions = ("accept", "reject")
     readonly_fields = (
         "user",
@@ -75,7 +75,7 @@ class VerifySubmissionAdmin(DjangoObjectActions, SubmissionAdmin):
         ),
     )
 
-    @action_display(
+    @action_display(  # type: ignore
         label=_("Accept"),
         attrs={
             "style": "background: green",
@@ -87,7 +87,7 @@ class VerifySubmissionAdmin(DjangoObjectActions, SubmissionAdmin):
         obj.verified = timezone.localtime()
         obj.save()
 
-    @action_display(
+    @action_display(  # type: ignore
         label=_("Reject"),
         attrs={
             "style": "background: red",

@@ -8,7 +8,7 @@ from utils.rest_framework.filters import SearchFilter
 
 class LanguageViewSet(BaseViewMixin, viewsets.ReadOnlyModelViewSet):
     lookup_field = "slug"
-    queryset = Language.objects.active()  # type: ignore
+    queryset = Language.objects.active()
     serializer_class = LanguageSerializer
     pagination_class = PageNumberPagination
     filter_backends = (

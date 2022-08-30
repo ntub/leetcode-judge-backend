@@ -1,5 +1,4 @@
-from collections import namedtuple
-from typing import List
+from typing import List, NamedTuple
 
 from django.core.files.uploadedfile import SimpleUploadedFile
 from faker import Faker
@@ -10,6 +9,11 @@ from app.problems.models import CodeSnippet, Language, Question
 from app.submissions.api.serializers import SubmissionSerializer
 from app.submissions.tests.prepare import CourseFactory, UserFactory
 from app.users.models import User
+
+_Request = NamedTuple(
+    "_Request",
+    [("user", User)],
+)
 
 
 class SubmissionTest(test.APITestCase):
@@ -44,7 +48,7 @@ class SubmissionTest(test.APITestCase):
             languages=cls.languages,
         )
 
-    def test_serializer(self):
+    def test_serializer(self) -> None:
         faker = Faker()
         image = SimpleUploadedFile(
             name="test_image.jpg",
@@ -59,7 +63,7 @@ class SubmissionTest(test.APITestCase):
             "solved": faker.date_time().strftime("%Y-%m-%d"),
             "snapshot": image,
         }
-        request = namedtuple("Request", "user")(user=self.student)
+        request = _Request(user=self.student)
         serializer = SubmissionSerializer(
             data=data,
             context={
@@ -68,7 +72,7 @@ class SubmissionTest(test.APITestCase):
         )
         self.assertTrue(serializer.is_valid(raise_exception=True))
 
-    def test_lang_not_in_course(self):
+    def test_lang_not_in_course(self) -> None:
         faker = Faker()
         image = SimpleUploadedFile(
             name="test_image.jpg",
@@ -77,19 +81,21 @@ class SubmissionTest(test.APITestCase):
         )
         data = {
             "question_title_slug": self.questions[0].title_slug,
-            "lang_slug": Language.objects.exclude(
-                slug__in=list(
-                    map(lambda o: o.slug, self.languages),
-                ),
-            )
-            .first()
-            .slug,
+            "lang_slug": (
+                Language.objects.exclude(  # type: ignore
+                    slug__in=list(
+                        map(lambda o: o.slug, self.languages),
+                    ),
+                )
+                .first()
+                .slug
+            ),
             "course_code": self.course.code,
             "source_code": faker.text(),
             "solved": faker.date_time().strftime("%Y-%m-%d"),
             "snapshot": image,
         }
-        request = namedtuple("Request", "user")(user=self.student)
+        request = _Request(user=self.student)
         serializer = SubmissionSerializer(
             data=data,
             context={
@@ -99,7 +105,7 @@ class SubmissionTest(test.APITestCase):
         self.assertFalse(serializer.is_valid())
         self.assertIn("course", serializer.errors)
 
-    def test_user_not_in_course(self):
+    def test_user_not_in_course(self) -> None:
         faker = Faker()
         image = SimpleUploadedFile(
             name="test_image.jpg",
@@ -114,7 +120,7 @@ class SubmissionTest(test.APITestCase):
             "solved": faker.date_time().strftime("%Y-%m-%d"),
             "snapshot": image,
         }
-        request = namedtuple("Request", "user")(user=UserFactory())
+        request = _Request(user=UserFactory())
         serializer = SubmissionSerializer(
             data=data,
             context={
@@ -124,7 +130,7 @@ class SubmissionTest(test.APITestCase):
         self.assertFalse(serializer.is_valid())
         self.assertIn("course", serializer.errors)
 
-    def test_question_not_in_course(self):
+    def test_question_not_in_course(self) -> None:
         faker = Faker()
         image = SimpleUploadedFile(
             name="test_image.jpg",
@@ -132,16 +138,18 @@ class SubmissionTest(test.APITestCase):
             content_type="image/jpeg",
         )
         data = {
-            "question_title_slug": Question.objects.filter(difficulty="Hard")
-            .first()
-            .title_slug,
+            "question_title_slug": (
+                Question.objects.filter(difficulty="Hard")  # type: ignore
+                .first()
+                .title_slug
+            ),
             "lang_slug": self.languages[0].slug,
             "course_code": self.course.code,
             "source_code": faker.text(),
             "solved": faker.date_time().strftime("%Y-%m-%d"),
             "snapshot": image,
         }
-        request = namedtuple("Request", "user")(user=self.student)
+        request = _Request(user=self.student)
         serializer = SubmissionSerializer(
             data=data,
             context={
@@ -151,7 +159,7 @@ class SubmissionTest(test.APITestCase):
         self.assertFalse(serializer.is_valid())
         self.assertIn("course", serializer.errors)
 
-    def test_lang_not_in_question(self):
+    def test_lang_not_in_question(self) -> None:
         faker = Faker()
         image = SimpleUploadedFile(
             name="test_image.jpg",
@@ -166,7 +174,7 @@ class SubmissionTest(test.APITestCase):
             "solved": faker.date_time().strftime("%Y-%m-%d"),
             "snapshot": image,
         }
-        request = namedtuple("Request", "user")(user=self.student)
+        request = _Request(user=self.student)
         serializer = SubmissionSerializer(
             data=data,
             context={

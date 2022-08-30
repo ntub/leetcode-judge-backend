@@ -2,15 +2,23 @@ from functools import partial
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django_extensions.db.models import TitleDescriptionModel
+from django_extensions.db.models import ActivatorModelManager, TitleDescriptionModel
 
 from app.courses.utils import generate_serial_number
 from app.problems.models import Language, Question
 from app.users.models import User
+from utils.django.managers import BaseManager
 from utils.django.models import BaseActivatorModel
 
 
-class Course(BaseActivatorModel, TitleDescriptionModel):
+class CourseManager(
+    ActivatorModelManager,  # type: ignore
+    BaseManager["Course"],
+):
+    pass
+
+
+class Course(BaseActivatorModel, TitleDescriptionModel):  # type: ignore
     code = models.CharField(
         _("code"),
         max_length=10,
@@ -43,9 +51,10 @@ class Course(BaseActivatorModel, TitleDescriptionModel):
         related_name="courses",
         blank=True,
     )
+    objects = CourseManager()
 
-    def __str__(self):
-        return self.title
+    def __str__(self) -> str:
+        return str(self.title)
 
     class Meta:
         verbose_name = _("course")

@@ -8,10 +8,10 @@ from django.utils import timezone
 def generate_serial_number(
     model_path: str,
     prefix: str,
-    field_name="serial_number",
-    characters=string.ascii_uppercase + string.digits,
-    code_length=3,
-    max_try=2000,
+    field_name: str = "serial_number",
+    characters: str = string.ascii_uppercase + string.digits,
+    code_length: int = 3,
+    max_try: int = 2000,
 ) -> str:
     model = apps.get_model(model_path)
     date = timezone.localdate().strftime("%Y%m%d")[-6:]

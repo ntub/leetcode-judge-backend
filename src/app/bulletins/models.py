@@ -3,13 +3,21 @@ import os
 from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django_extensions.db.models import TitleDescriptionModel
+from django_extensions.db.models import ActivatorModelManager, TitleDescriptionModel
 
 from app.courses.models import Course
+from utils.django.managers import BaseManager
 from utils.django.models import BaseActivatorModel, BaseModel
 
 
-class Announcement(TitleDescriptionModel, BaseActivatorModel):
+class AnnouncementManager(
+    ActivatorModelManager,  # type: ignore
+    BaseManager["Announcement"],
+):
+    pass
+
+
+class Announcement(TitleDescriptionModel, BaseActivatorModel):  # type: ignore
     description = RichTextUploadingField(
         verbose_name=_("description"),
         config_name="default",
@@ -20,9 +28,10 @@ class Announcement(TitleDescriptionModel, BaseActivatorModel):
         related_name="announcements",
         blank=True,
     )
+    objects = AnnouncementManager()
 
     def __str__(self) -> str:
-        return self.title
+        return str(self.title)
 
     class Meta:
         verbose_name = _("announcement")
@@ -45,11 +54,11 @@ class AttachFile(BaseModel):
     )
 
     @property
-    def name(self):
-        return os.path.basename(self.file.name)
+    def name(self) -> str:
+        return str(os.path.basename(self.file.name))
 
-    def __str__(self):
-        return self.file.name
+    def __str__(self) -> str:
+        return str(self.file.name)
 
     class Meta:
         verbose_name = _("attach file")

@@ -1,3 +1,5 @@
+from typing import Any
+
 from django.core.management.base import BaseCommand
 
 from app.problems.models import CodeSnippet, Language
@@ -6,7 +8,7 @@ from app.problems.models import CodeSnippet, Language
 class Command(BaseCommand):
     help = "Collecting languages from CodeSnippet."
 
-    def handle(self, *args, **options):
+    def handle(self, *args: Any, **options: Any) -> None:
         langs = set(
             CodeSnippet.objects.all().values_list(
                 "lang_slug",

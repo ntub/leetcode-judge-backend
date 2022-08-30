@@ -1,3 +1,5 @@
+from typing import Any
+
 from rest_framework import serializers
 
 from app.submissions.api.serializers import SubmissionStatisticsSerializer
@@ -5,7 +7,7 @@ from app.users.api.serializers.user import UserSerializer
 
 
 class UserStatisticsSerializer(
-    serializers.Serializer,
+    serializers.Serializer[Any],
 ):
     user = UserSerializer(read_only=True)
     statistics = SubmissionStatisticsSerializer(

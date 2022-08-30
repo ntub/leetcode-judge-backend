@@ -1,5 +1,6 @@
-from collections import namedtuple
+from typing import Any, Dict, NamedTuple, Union
 
+from django.contrib.auth.models import AnonymousUser
 from django.db.models import Count
 from drf_yasg.utils import swagger_auto_schema
 from rest_framework import status, viewsets
@@ -13,12 +14,17 @@ from app.users.api.serializers import UserStatisticsSerializer
 from app.users.models import User
 from utils.rest_framework import BaseViewMixin
 
+_UserStatistics = NamedTuple(
+    "_UserStatistics",
+    [("user", Union[User, AnonymousUser]), ("statistics", Dict[str, Any])],
+)
+
 
 class UserViewSet(BaseViewMixin, viewsets.GenericViewSet):
     queryset = User.objects.filter(is_active=True)
     serializer_class = UserStatisticsSerializer
     pagination_class = None
-    filter_backends = []
+    filter_backends = []  # type: ignore
 
     @action(["get"], detail=False)
     @swagger_auto_schema(
@@ -27,10 +33,6 @@ class UserViewSet(BaseViewMixin, viewsets.GenericViewSet):
         },
     )
     def me(self, request: Request) -> Response:
-        user_statistics_class = namedtuple(
-            "UserStatistics",
-            ["user", "statistics"],
-        )
         statistics_values = list(
             Submission.objects.select_related(
                 "question",
@@ -65,9 +67,9 @@ class UserViewSet(BaseViewMixin, viewsets.GenericViewSet):
             stat_key = stat_key_fmt % (difficulty_, status_)
             statistics_mapping[stat_key] = user_stat
 
-        user_statistics = user_statistics_class(
+        user_statistics = _UserStatistics(
             user=request.user,
-            statistics=statistics_mapping.values(),
+            statistics=statistics_mapping.values(),  # type: ignore
         )
         serializer = self.get_serializer(user_statistics)
         return Response(serializer.data)

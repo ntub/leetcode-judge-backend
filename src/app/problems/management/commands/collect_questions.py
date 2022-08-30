@@ -1,4 +1,4 @@
-from typing import List
+from typing import Any, List
 
 from django.core.management.base import BaseCommand
 
@@ -15,7 +15,7 @@ class Command(BaseCommand):
             ending="\r",
         )
 
-    def handle(self, *args, **options):
+    def handle(self, *args: List[Any], **options: Any) -> None:
         collector = QuestionCollector()
         collector.collect_question_list(self.logger)
         self.stdout.write(

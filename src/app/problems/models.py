@@ -6,8 +6,9 @@ import humps
 
 from django.db import models
 from django.utils.translation import gettext_lazy as _
-from django_extensions.db.models import ActivatorModel
+from django_extensions.db.models import ActivatorModel, ActivatorModelManager
 
+from utils.django.managers import BaseManager
 from utils.django.models import UUIDModel
 
 
@@ -22,12 +23,16 @@ class TopicTag(UUIDModel):
         unique=True,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name}({self.slug})"
 
     class Meta:
         verbose_name = _("topic tag")
         verbose_name_plural = _("topic tags")
+
+
+class QuestionManager(BaseManager["Question"]):
+    pass
 
 
 class Question(UUIDModel):
@@ -102,28 +107,29 @@ class Question(UUIDModel):
         blank=True,
         null=True,
     )
+    objects = QuestionManager()
 
     @classmethod
     def from_leetcode(cls, data: Dict[str, Any]) -> "Question":
-        data["similar_questions"] = humps.decamelize(
+        data["similar_questions"] = humps.decamelize(  # type: ignore
             json.loads(
                 data.get("similar_questions", "{}"),
             ),
         )
-        data["stats"] = humps.decamelize(
+        data["stats"] = humps.decamelize(  # type: ignore
             json.loads(
                 data.get("stats", "{}"),
             ),
         )
-        data["hints"] = humps.decamelize(
+        data["hints"] = humps.decamelize(  # type: ignore
             data.get("hints", []),
         )
-        data["meta_data"] = humps.decamelize(
+        data["meta_data"] = humps.decamelize(  # type: ignore
             json.loads(
                 data.get("meta_data", "{}"),
             ),
         )
-        data["env_info"] = humps.decamelize(
+        data["env_info"] = humps.decamelize(  # type: ignore
             json.loads(
                 data.get("env_info", "{}"),
             ),
@@ -132,7 +138,7 @@ class Question(UUIDModel):
         data = {k: v for k, v in data.items() if k in fields}
         return cls(**data)
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"[{self.difficulty}]{self.title}({self.title_slug})"
 
     class Meta:
@@ -159,7 +165,7 @@ class CodeSnippet(UUIDModel):
         on_delete=models.CASCADE,
     )
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.question} - {self.lang}"
 
     class Meta:
@@ -167,7 +173,14 @@ class CodeSnippet(UUIDModel):
         verbose_name_plural = _("code snippets")
 
 
-class Language(ActivatorModel, UUIDModel):
+class LanguageManager(
+    ActivatorModelManager,  # type: ignore
+    BaseManager["Language"],
+):
+    pass
+
+
+class Language(ActivatorModel, UUIDModel):  # type: ignore
     name = models.CharField(
         _("lang"),
         max_length=32,
@@ -177,8 +190,9 @@ class Language(ActivatorModel, UUIDModel):
         max_length=32,
         unique=True,
     )
+    objects = LanguageManager()
 
-    def __str__(self):
+    def __str__(self) -> str:
         return f"{self.name} - {self.slug}"
 
     class Meta:

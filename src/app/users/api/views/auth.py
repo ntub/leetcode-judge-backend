@@ -1,8 +1,11 @@
+from typing import Any, Type
+
 from django.utils.translation import gettext_lazy as _
 from drf_yasg.utils import swagger_auto_schema
-from rest_framework import permissions, viewsets
+from rest_framework import permissions, serializers, viewsets
 from rest_framework.decorators import action
 from rest_framework.exceptions import AuthenticationFailed
+from rest_framework.request import Request
 from rest_framework.response import Response
 from rest_framework_simplejwt.exceptions import InvalidToken, TokenError
 from rest_framework_simplejwt.serializers import TokenRefreshSerializer
@@ -29,16 +32,16 @@ class AuthViewSet(viewsets.GenericViewSet):
     serializer_class = LoginSerializer
     pagination_class = None
 
-    def get_serializer_class(self):
+    def get_serializer_class(self) -> Type[serializers.BaseSerializer[Any]]:
         if self.action == "refresh":
-            return TokenRefreshSerializer
+            return TokenRefreshSerializer  # type: ignore
         elif self.action == "verify":
             return AuthVerifySerializer
         return super().get_serializer_class()
 
     @swagger_auto_schema(responses={200: AuthPayloadSerializer})  # type: ignore
     @action(["post"], detail=False)
-    def login(self, request):
+    def login(self, request: Request) -> Response:
         """
         Login and validate.
 
@@ -79,7 +82,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: AuthPayloadSerializer})  # type: ignore
     @action(["post"], detail=False)
-    def refresh(self, request):
+    def refresh(self, request: Request) -> Response:
         serializer = self.get_serializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)
@@ -89,7 +92,7 @@ class AuthViewSet(viewsets.GenericViewSet):
 
     @swagger_auto_schema(responses={200: TokenPayloadSerializer})  # type: ignore
     @action(["post"], detail=False)
-    def verify(self, request):
+    def verify(self, request: Request) -> Response:
         serializer = self.get_serializer(data=request.data)
         try:
             serializer.is_valid(raise_exception=True)

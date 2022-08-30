@@ -6,7 +6,7 @@ from app.bulletins.models import Announcement, AttachFile
 from utils.django.admin import AuditModelAdmin
 
 
-class AttachFileInline(admin.TabularInline):
+class AttachFileInline(admin.TabularInline["AttachFile", "Announcement"]):
     model = AttachFile
     max_num = 10
 

@@ -7,7 +7,7 @@ PageIndex = NewType("PageIndex", int)
 
 
 class QuestionCollector:
-    def __init__(self):
+    def __init__(self) -> None:
         self.api = LeetCodeGraphAPI()
 
     def collect_question_list(

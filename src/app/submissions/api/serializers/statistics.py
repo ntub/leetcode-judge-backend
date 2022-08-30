@@ -1,8 +1,10 @@
+from typing import Any
+
 from rest_framework import serializers
 
 
 class SubmissionStatisticsSerializer(
-    serializers.Serializer,
+    serializers.Serializer[Any],
 ):
     difficulty = serializers.CharField(
         source="question__difficulty",

@@ -25,7 +25,7 @@ class UUIDModel(models.Model):
         abstract = True
 
 
-class BaseModel(TimeStampedModel, UUIDModel):
+class BaseModel(TimeStampedModel, UUIDModel):  # type: ignore
     creator = models.ForeignKey(
         USER_MODEL,
         verbose_name=_("creator"),
@@ -49,6 +49,6 @@ class BaseModel(TimeStampedModel, UUIDModel):
         abstract = True
 
 
-class BaseActivatorModel(ActivatorModel, BaseModel):
+class BaseActivatorModel(ActivatorModel, BaseModel):  # type: ignore
     class Meta:
         abstract = True

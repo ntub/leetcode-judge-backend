@@ -13,7 +13,7 @@ from utils.django.managers import BaseManager
 from utils.django.models import BaseModel
 
 
-class UserManager(BaseManager["User"], DjangoUserManager["User"]):
+class UserManager(BaseManager["User"], DjangoUserManager[AbstractUser]):
     use_in_migrations = True
 
     def _create_user(
@@ -69,5 +69,6 @@ class User(BaseModel, AbstractUser, PermissionsMixin):
         return str(self.username)
 
     @property
-    def date_joined(self) -> datetime:
+    def date_joined(self) -> datetime:  # type: ignore
+        self.created: datetime
         return self.created

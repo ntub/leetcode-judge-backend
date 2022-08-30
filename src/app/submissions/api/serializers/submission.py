@@ -18,12 +18,12 @@ class SubmissionSerializer(serializers.ModelSerializer[Submission]):
         slug_field="title_slug",
         queryset=Question.objects.all(),
     )
-    lang_slug = serializers.SlugRelatedField(
+    lang_slug = serializers.SlugRelatedField(  # type: ignore
         source="lang",
         slug_field="slug",
         queryset=Language.objects.active(),
     )
-    course_code = serializers.SlugRelatedField(
+    course_code = serializers.SlugRelatedField(  # type: ignore
         source="course",
         slug_field="code",
         queryset=Course.objects.active(),
@@ -55,7 +55,7 @@ class SubmissionSerializer(serializers.ModelSerializer[Submission]):
                 {"question": _("`lang` not in Question")},
             )
 
-        if course:  # type: Course
+        if course:
             users = list(course.users.all())
             if users and user not in users:
                 raise serializers.ValidationError(

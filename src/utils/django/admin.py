@@ -1,4 +1,4 @@
-from typing import Any, Callable, Dict, Optional, TypeVar
+from typing import Any, Callable, Dict, Optional, TypeVar, Union
 
 from django.contrib.admin import ModelAdmin
 from django.db import models
@@ -16,8 +16,8 @@ def action_display(
     label: Optional[str] = None,
     description: Optional[str] = None,
     attrs: Optional[Dict[str, Any]] = None,
-):
-    def decorator(func):
+) -> Any:
+    def decorator(func: Any) -> Any:
         if label is not None:
             func.label = label
         if description is not None:
@@ -36,7 +36,7 @@ class AuditModelAdmin(ModelAdmin[_T]):
     def save_model(
         self,
         request: HttpRequest,
-        obj: BaseModel,
+        obj: Union[models.Model, BaseModel],
         form: Form,
         change: Any,
     ) -> None:
@@ -46,4 +46,4 @@ class AuditModelAdmin(ModelAdmin[_T]):
         if hasattr(obj, "updater"):
             obj.updater = request.user  # type: ignore
 
-        super().save_model(request, obj, form, change)
+        super().save_model(request, obj, form, change)  # type: ignore

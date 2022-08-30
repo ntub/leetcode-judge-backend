@@ -20,7 +20,7 @@ class LeetCodeGraphAPI:
     QUESTION_LIST_QUERY_FILE = "QuestionList.graphql"
     QUESTION_QUERY_FILE = "Question.graphql"
 
-    def __init__(self):
+    def __init__(self) -> None:
         self.transport = RequestsHTTPTransport(
             url="https://leetcode.com/graphql",
             verify=True,
@@ -29,7 +29,7 @@ class LeetCodeGraphAPI:
         self.graphql_dir: Path = settings.BASE_DIR / "graphql"
 
     def _read_graphql(self, method: GraphAPIMethod, file: str) -> str:
-        file_path = self.graphql_dir / method.value / file
+        file_path = self.graphql_dir / str(method.value) / file
         with open(file_path, "r") as f:
             return f.read()
 
@@ -62,7 +62,7 @@ class LeetCodeGraphAPI:
             gql_doc,
             variable_values=params,
         )
-        return humps.decamelize(data)
+        return humps.decamelize(data)  # type: ignore
 
     def question_list(
         self,
